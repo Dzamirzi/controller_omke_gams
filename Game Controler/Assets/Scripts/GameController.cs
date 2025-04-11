@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class GameController : MonoBehaviour {
-
+public class GameController : MonoBehaviour
+{
     public GameObject gameOverPanel;
     public Text scoreText;
     int score = 0;
@@ -13,15 +13,34 @@ public class GameController : MonoBehaviour {
     public Text currentText;
     public GameObject newAlert;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    // Use this for initialization
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        // Wait for input to restart when game is over
+        if (gameOverPanel.activeSelf)
+        {
+            // Keyboard input
+            if (Input.anyKeyDown)
+            {
+                RestartGame();
+            }
+
+            // Controller input (joystick buttons)
+            for (int i = 0; i < 20; i++)
+            {
+                if (Input.GetKeyDown("joystick button " + i))
+                {
+                    RestartGame();
+                }
+            }
+        }
+    }
 
     public void GameOver()
     {
@@ -32,28 +51,27 @@ public class GameController : MonoBehaviour {
     {
         scoreText.gameObject.SetActive(false);
 
-        if(score> PlayerPrefs.GetInt("Best", 0))
+        if (score > PlayerPrefs.GetInt("Best", 0))
         {
             PlayerPrefs.SetInt("Best", score);
             newAlert.SetActive(true);
         }
-        bestText.text = "Best Score :" + PlayerPrefs.GetInt("Best", 0).ToString();
+
+        bestText.text = "Best Score : " + PlayerPrefs.GetInt("Best", 0).ToString();
         currentText.text = "Current Score : " + score.ToString();
 
         gameOverPanel.SetActive(true);
     }
 
-   public void RestartGame()
+    public void RestartGame()
     {
         SceneManager.LoadScene("GameScene", LoadSceneMode.Single);
         Debug.Log("Restarted.");
-
     }
 
-   public void IncrementScore()
+    public void IncrementScore()
     {
         score++;
-        scoreText.text =  score.ToString();
-        
+        scoreText.text = score.ToString();
     }
 }

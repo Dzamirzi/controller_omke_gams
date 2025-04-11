@@ -22,17 +22,21 @@ public class PlayerScript : MonoBehaviour {
 	}
 
     private void FixedUpdate()
+{
+    // Support Spacebar and Xbox Controller (A button)
+    bool jumpPressed = Input.GetKey(KeyCode.Space) || Input.GetButton("Jump");
+
+    if (jumpPressed && isGrounded && !isGameOver)
     {
-        if (Input.GetKey(KeyCode.Space)&& isGrounded && !isGameOver)
-        {
-            myRigidbody.AddForce(Vector3.up * (jumpPower * myRigidbody.mass * myRigidbody.gravityScale * 20.0f));
-        }
-        // hit in face check
-        if(transform.position.x < posX)
-        {
-            GameOver();
-        }
+        myRigidbody.AddForce(Vector3.up * (jumpPower * myRigidbody.mass * myRigidbody.gravityScale * 20.0f));
     }
+
+    // hit in face check
+    if (transform.position.x < posX)
+    {
+        GameOver();
+    }
+}
 
     private void Update()
     {
