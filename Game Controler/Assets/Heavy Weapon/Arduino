@@ -1,0 +1,24 @@
+// === Arduino Button Sender ===
+// Sends "1" when button pressed, "0" when released
+
+int buttonPin = 2;  // connect button to digital pin 2
+int lastState = HIGH;
+
+void setup() {
+  pinMode(buttonPin, INPUT_PULLUP);  // use internal pull-up resistor
+  Serial.begin(9600);
+}
+
+void loop() {
+  int state = digitalRead(buttonPin);
+  
+  if (state != lastState) { // if button state changed
+    if (state == LOW) {
+      Serial.println("1");  // button pressed
+    } else {
+      Serial.println("0");  // button released
+    }
+    lastState = state;
+    delay(50); // debounce delay
+  }
+}
